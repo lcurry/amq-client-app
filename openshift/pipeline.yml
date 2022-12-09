@@ -1,0 +1,13 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: fuse-amq-client-pipeline
+spec:
+  source:
+    git:
+      uri: https://github.com/rh-ei-stp/fuse-client-app.git
+      ref: master
+  strategy:
+    jenkinsPipelineStrategy:
+      jenkinsfilePath: Jenkinsfile
+    runPolicy: Parallel

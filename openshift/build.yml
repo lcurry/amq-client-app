@@ -1,0 +1,42 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+labels:
+  template: fuse-amq-client-build
+metadata:
+  annotations:
+    description: s2i build for Fuse AMQP client app
+  name: fuse-amq-client-build
+objects:
+  - apiVersion: build.openshift.io/v1
+    kind: BuildConfig
+    metadata:
+      name: fuse-amq-client
+      labels:
+        app: fuse-amq-client
+    spec:
+      output:
+        to:
+          kind: ImageStreamTag
+          name: fuse-amq-client:${APPLICATION_IMAGE_TAG}
+      postCommit: {}
+      resources: {}
+      runPolicy: Serial
+      source:
+        binary: {}
+        type: Binary
+      strategy:
+        type: Source
+        sourceStrategy:
+          from:
+            kind: ImageStreamTag
+            name: fuse7-java-openshift:1.8
+            namespace: openshift
+  - apiVersion: image.openshift.io/v1
+    kind: ImageStream
+    metadata:
+      name: fuse-amq-client
+      labels:
+        app: fuse-amq-client
+parameters:
+  - name: APPLICATION_IMAGE_TAG
+    value: latest
